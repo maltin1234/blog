@@ -3,9 +3,9 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const app = express();
-const app = express();
+require("./routes/blog.routes")(app);
 
-const db = require("./app/models");
+const db = require("./models");
 db.mongoose
   .connect(db.url, {
     useNewUrlParser: true,
@@ -33,7 +33,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+  res.json({ message: "Welcome" });
 });
 
 // set port, listen for requests

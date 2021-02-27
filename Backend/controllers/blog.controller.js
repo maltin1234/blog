@@ -1,5 +1,5 @@
-const db = require("../models");
-const Tutorial = db.tutorials;
+const db = require("../models/index");
+const Post = db.posts;
 
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
@@ -10,15 +10,15 @@ exports.create = (req, res) => {
   }
 
   // Create a Tutorial
-  const tutorial = new Tutorial({
+  const post = new Post({
     title: req.body.title,
     description: req.body.description,
     published: req.body.published ? req.body.published : false,
   });
 
   // Save Tutorial in the database
-  tutorial
-    .save(tutorial)
+  post
+    .save(post)
     .then((data) => {
       res.send(data);
     })
@@ -37,7 +37,7 @@ exports.findAll = (req, res) => {
     ? { title: { $regex: new RegExp(title), $options: "i" } }
     : {};
 
-  Tutorial.find(condition)
+  Post.find(condition)
     .then((data) => {
       res.send(data);
     })
@@ -53,7 +53,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Tutorial.findById(id)
+  Post.findById(id)
     .then((data) => {
       if (!data)
         res.status(404).send({ message: "Not found Tutorial with id " + id });
@@ -76,7 +76,7 @@ exports.update = (req, res) => {
 
   const id = req.params.id;
 
-  Tutorial.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+  Post.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
     .then((data) => {
       if (!data) {
         res.status(404).send({
@@ -95,7 +95,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  Tutorial.findByIdAndRemove(id)
+  Post.findByIdAndRemove(id)
     .then((data) => {
       if (!data) {
         res.status(404).send({
@@ -116,7 +116,7 @@ exports.delete = (req, res) => {
 
 // Delete all Tutorials from the database.
 exports.deleteAll = (req, res) => {
-  Tutorial.deleteMany({})
+  Post.deleteMany({})
     .then((data) => {
       res.send({
         message: `${data.deletedCount} Tutorials were deleted successfully!`,
@@ -132,7 +132,7 @@ exports.deleteAll = (req, res) => {
 
 // Find all published Tutorials
 exports.findAllPublished = (req, res) => {
-  Tutorial.find({ published: true })
+  Post.find({ published: true })
     .then((data) => {
       res.send(data);
     })
